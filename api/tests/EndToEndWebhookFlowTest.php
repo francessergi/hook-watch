@@ -100,6 +100,11 @@ class EndToEndWebhookFlowTest extends WebTestCase
         }
 
         for ($attempt = 0; $attempt < 50; ++$attempt) {
+            $status = proc_get_status($this->backendProcess);
+            if (!$status['running']) {
+                $this->fail('The fake webhook backend process exited unexpectedly (port possibly already in use).');
+            }
+
             usleep(100000);
             $connection = @fsockopen('127.0.0.1', 8123, $errno, $errstr, 0.2);
             if (is_resource($connection)) {
