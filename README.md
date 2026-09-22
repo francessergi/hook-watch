@@ -39,6 +39,11 @@ It receives webhooks, persists them before acknowledging receipt, delivers them 
 - Basic event inspection dashboard
 - Tests, CI/CD and public deployment
 
+## Contributing
+
+Want to help out? Check [TODO.md](TODO.md) for the current status and a list
+of open tasks/good first contributions.
+
 ## Documentation
 
 - [Product](docs/01-product.md)
