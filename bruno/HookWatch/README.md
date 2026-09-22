@@ -11,7 +11,17 @@ Bruno collections are plain text files (`.bru`) meant to be committed to git
 ## Prerequisites
 
 Follow [docs/08-local-dev-guide.md](../../docs/08-local-dev-guide.md) to get
-the full stack running locally:
+the stack running, either fully dockerized or hybrid:
+
+**Fully dockerized** (use the **Docker** environment):
+
+1. `docker compose up -d --build` — starts Postgres, RabbitMQ, the API and
+   the worker, all as containers.
+2. The fake backend still runs on your host machine (it's not part of the
+   HookWatch stack, it simulates *your* service):
+   `php -S 127.0.0.1:8123 -t api/tests/fixtures/e2e-backend`
+
+**Hybrid** (use the **Local** environment):
 
 1. PostgreSQL + RabbitMQ (`docker compose up -d postgres rabbitmq`)
 2. HookWatch API (`php -S 127.0.0.1:8000 -t public`)
@@ -22,7 +32,16 @@ the full stack running locally:
 ## How to use
 
 1. Open Bruno → **Open Collection** → select this `bruno/HookWatch` folder.
-2. Select the **Local** environment (top-right environment selector).
+2. Select an environment (top-right selector) depending on how you're
+   running the stack:
+   - **Local** — hybrid setup (Postgres/RabbitMQ in Docker, API/worker run
+     directly with `php -S` / `php bin/console`). Fake backend reachable at
+     `127.0.0.1:8123`.
+   - **Docker** — fully dockerized setup (`docker compose up -d --build`,
+     API/worker also run as containers). Since the containers can't reach
+     `127.0.0.1` on your machine, the fake backend must be addressed as
+     `http://host.docker.internal:8123` instead — this environment sets
+     `fake_backend_url` accordingly.
 3. Run the requests in order:
 
    - **01 - Setup (acting as HookWatch customer)**
@@ -51,12 +70,14 @@ the full stack running locally:
 
 ## Environment variables
 
-Defined in `environments/Local.bru`:
+Defined in `environments/Local.bru` and `environments/Docker.bru` (only
+`fake_backend_url` differs between the two):
 
-| Variable | Default | Notes |
-|---|---|---|
-| `base_url` | `http://127.0.0.1:8000` | HookWatch API |
-| `api_key` | `hookwatch-dev-key` | Sent as `X-API-Key` on admin endpoints |
-| `fake_backend_url` | `http://127.0.0.1:8123` | Used as `forward_url` when creating an endpoint |
-| `public_token` | _(auto-filled)_ | Set by "Create Endpoint" |
-| `event_id` | _(auto-filled)_ | Set by the "Send Webhook" requests |
+| Variable | Local | Docker | Notes |
+|---|---|---|---|
+| `base_url` | `http://127.0.0.1:8000` | `http://127.0.0.1:8000` | HookWatch API (port is published either way) |
+| `api_key` | `hookwatch-dev-key` | `hookwatch-dev-key` | Sent as `X-API-Key` on admin endpoints |
+| `fake_backend_url` | `http://127.0.0.1:8123` | `http://host.docker.internal:8123` | Used as `forward_url` when creating an endpoint — must be reachable *from the API container* in the Docker case |
+| `public_token` | _(auto-filled)_ | _(auto-filled)_ | Set by "Create Endpoint" |
+| `event_id` | _(auto-filled)_ | _(auto-filled)_ | Set by the "Send Webhook" requests |
+
