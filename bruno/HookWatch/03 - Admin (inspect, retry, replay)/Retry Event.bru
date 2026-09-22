@@ -1,0 +1,22 @@
+meta {
+  name: Retry Event
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/events/{{event_id}}/retry
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-Key: {{api_key}}
+}
+
+docs {
+  Manually triggers a new delivery attempt (type MANUAL_RETRY) for the
+  given event, regardless of its current status.
+
+  Requires `event_id` to be set.
+}

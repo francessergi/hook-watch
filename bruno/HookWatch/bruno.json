@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "HookWatch",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,19 @@
+meta {
+  name: List Endpoints
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/endpoints
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-Key: {{api_key}}
+}
+
+docs {
+  Lists all webhook endpoints registered by the HookWatch customer.
+}

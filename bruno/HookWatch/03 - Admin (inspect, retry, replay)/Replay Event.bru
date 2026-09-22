@@ -1,0 +1,23 @@
+meta {
+  name: Replay Event
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/api/events/{{event_id}}/replay
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-Key: {{api_key}}
+}
+
+docs {
+  Replays the event: triggers a new delivery attempt (type REPLAY),
+  typically used to re-send an already-DELIVERED event on purpose
+  (e.g. the customer backend lost the original data).
+
+  Requires `event_id` to be set.
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Get Event Detail
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/events/{{event_id}}
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-Key: {{api_key}}
+}
+
+docs {
+  Fetches a single event, including its payload, headers, current status,
+  and full delivery attempt history.
+
+  Requires `event_id` to be set — run one of the requests in
+  "02 - Provider webhook" first, or set it manually from "List Events".
+
+  Poll this a couple of times after sending a webhook to watch the status
+  move RECEIVED -> PROCESSING -> DELIVERED (or FAILED/DEAD_LETTER) once the
+  worker (messenger:consume async) picks up the message.
+}
