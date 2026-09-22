@@ -12,6 +12,7 @@ class DeliveryAttempt
     public const TYPE_AUTOMATIC = 'AUTOMATIC';
     public const TYPE_MANUAL_RETRY = 'MANUAL_RETRY';
     public const TYPE_REPLAY = 'REPLAY';
+    public const TYPE_PROVIDER_RETRY = 'PROVIDER_RETRY';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
