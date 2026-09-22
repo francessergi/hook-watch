@@ -48,6 +48,7 @@ It receives webhooks, persists them before acknowledging receipt, delivers them 
 - [MVP Scope](docs/05-mvp-scope.md)
 - [Development Plan](docs/06-development-plan.md)
 - [Architecture Decisions](docs/07-decisions.md)
+- [Local Development & Manual Testing Guide](docs/08-local-dev-guide.md)
 
 ## Status
 
@@ -55,16 +56,26 @@ MVP foundation is implemented in the `api/` Symfony application with Doctrine en
 
 ## Run locally
 
-```bash
-cd api
-composer install
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-php bin/console server:run 0.0.0.0:8000
-```
+See [docs/08-local-dev-guide.md](docs/08-local-dev-guide.md) for the full guide,
+including manual testing with curl/Bruno and RabbitMQ/AMQP setup notes.
 
-Or use Docker Compose from the repository root:
+Quick start with Docker Compose (recommended):
 
 ```bash
 docker compose up --build
+docker compose exec api php bin/console doctrine:database:create --if-not-exists
+docker compose exec api php bin/console doctrine:migrations:migrate -n
+```
+
+Or run the app directly on the host against dockerized PostgreSQL/RabbitMQ:
+
+```bash
+docker compose up -d postgres rabbitmq
+cd api
+composer install
+php bin/console doctrine:database:create --if-not-exists
+php bin/console doctrine:migrations:migrate -n
+php -S 127.0.0.1:8000 -t public
+# in another terminal:
+php bin/console messenger:consume async -vv
 ```
