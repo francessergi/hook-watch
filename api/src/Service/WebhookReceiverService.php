@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\WebhookEndpoint;
 use App\Entity\WebhookEvent;
+use App\Entity\DeliveryAttempt;
 use App\Message\DeliverWebhookMessage;
 use App\Repository\WebhookEndpointRepository;
 use App\Repository\WebhookEventRepository;
@@ -41,6 +42,8 @@ class WebhookReceiverService
         $externalId = $this->extractExternalId($request);
         $existingEvent = $this->webhookEventRepository->findOneForEndpointAndExternalId($endpoint, $externalId);
         if ($existingEvent instanceof WebhookEvent) {
+            $this->maybeRetryDuplicate($existingEvent);
+
             return $existingEvent;
         }
 
@@ -59,6 +62,22 @@ class WebhookReceiverService
         $this->messageBus->dispatch(new DeliverWebhookMessage($event->getId()));
 
         return $event;
+    }
+
+    /**
+     * When a provider re-sends a webhook we already know about (same endpoint + external_id)
+     * and the previous processing ended in a failure state, treat this duplicate delivery
+     * as an opportunity to retry rather than silently ignoring it.
+     */
+    private function maybeRetryDuplicate(WebhookEvent $event): void
+    {
+        if (!in_array($event->getStatus(), [WebhookEvent::STATUS_FAILED, WebhookEvent::STATUS_DEAD_LETTER], true)) {
+            return;
+        }
+
+        $this->messageBus->dispatch(
+            new DeliverWebhookMessage($event->getId(), DeliveryAttempt::TYPE_PROVIDER_RETRY)
+        );
     }
 
     private function extractExternalId(Request $request): ?string
