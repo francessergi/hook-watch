@@ -38,6 +38,7 @@ class WebhookDeliveryService
                     'Content-Type' => 'application/json',
                     'X-HookWatch-Event-Id' => (string) $event->getId(),
                     'X-HookWatch-Endpoint-Id' => (string) $event->getEndpoint()->getId(),
+                    'X-HookWatch-Event-Type' => $event->getEventType(),
                     'X-HookWatch-External-Id' => (string) ($event->getExternalId() ?? ''),
                 ],
                 'json' => $event->getPayload(),
