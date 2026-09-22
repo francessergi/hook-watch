@@ -35,6 +35,12 @@ docker compose exec api php bin/console doctrine:migrations:migrate -n
 
 The API is then reachable at `http://localhost:8000`.
 
+> ⚠️ If you want to test outbound deliveries with a fake "customer backend"
+> running on your host machine (e.g. the fixture below, or the Bruno
+> collection's `Docker` environment), the `api`/`worker` containers can't
+> reach `127.0.0.1` on your host — use `http://host.docker.internal:<port>`
+> as the `forward_url` instead.
+
 ## 2. Hybrid setup (Docker infra + local PHP app)
 
 ### 2.1 Start infrastructure only
