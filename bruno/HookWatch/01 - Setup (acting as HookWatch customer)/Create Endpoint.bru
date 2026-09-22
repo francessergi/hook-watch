@@ -1,0 +1,42 @@
+meta {
+  name: Create Endpoint
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/endpoints
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  X-API-Key: {{api_key}}
+}
+
+body:json {
+  {
+    "name": "Demo provider (Stripe-like)",
+    "forward_url": "{{fake_backend_url}}"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setEnvVar("public_token", res.body.public_token);
+  }
+}
+
+docs {
+  Simulates the HookWatch *customer* registering a new webhook endpoint.
+
+  On success, the response includes `public_token` / `public_url`. This
+  request automatically stores `public_token` into the active environment
+  so the next requests in this collection can use it directly.
+
+  `forward_url` points at the local fake backend fixture
+  (`api/tests/fixtures/e2e-backend`) — start it with:
+
+      php -S 127.0.0.1:8123 -t api/tests/fixtures/e2e-backend
+}

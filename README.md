@@ -65,6 +65,14 @@ See [TODO.md](TODO.md) for what's still planned (dashboard UI, PHPStan, public d
 Want to help out? Check [TODO.md](TODO.md) for the current status and a list
 of open tasks/good first contributions.
 
+## Manual testing (Bruno)
+
+A ready-to-use [Bruno](https://www.usebruno.com/) collection lives in
+[`bruno/HookWatch`](bruno/HookWatch) — open that folder in Bruno to create
+endpoints, simulate provider webhooks, and inspect/retry/replay events
+without writing curl commands by hand. See
+[bruno/HookWatch/README.md](bruno/HookWatch/README.md) for usage.
+
 ## Documentation
 
 - [Product](docs/01-product.md)

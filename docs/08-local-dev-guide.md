@@ -125,6 +125,11 @@ Received requests are appended to `tests/fixtures/e2e-backend/requests.log`.
 
 ## 3. Manual testing flow (Bruno / curl)
 
+> 💡 A ready-made Bruno collection with all the requests below (and
+> auto-chaining of `public_token`/`event_id` between requests) is available
+> at [`bruno/HookWatch`](../bruno/HookWatch). Open it in the Bruno app and
+> select the **Local** environment to skip writing curl commands by hand.
+
 ### 3.1 Create a webhook endpoint
 
 ```bash
