@@ -65,6 +65,10 @@ See [TODO.md](TODO.md) for what's still planned (dashboard UI, PHPStan, public d
 Want to help out? Check [TODO.md](TODO.md) for the current status and a list
 of open tasks/good first contributions.
 
+After cloning, run `git config core.hooksPath .githooks` once to enable the
+repo's git hooks (currently: a `pre-commit` guard that blocks commits made
+with an unintended git identity).
+
 ## Manual testing (Bruno)
 
 A ready-to-use [Bruno](https://www.usebruno.com/) collection lives in
