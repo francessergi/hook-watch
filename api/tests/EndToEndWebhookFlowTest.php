@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EndToEndWebhookFlowTest extends WebTestCase
@@ -30,6 +31,19 @@ class EndToEndWebhookFlowTest extends WebTestCase
         $this->startBackend();
 
         $client = static::createClient();
+
+        $entityManager = self::getContainer()->get('doctrine')->getManager();
+        $schemaTool = new SchemaTool($entityManager);
+        $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
+
+        if ($metadata !== []) {
+            try {
+                $schemaTool->dropSchema($metadata);
+            } catch (\Throwable) {
+            }
+
+            $schemaTool->createSchema($metadata);
+        }
 
         $client->request('POST', '/api/endpoints', server: [
             'CONTENT_TYPE' => 'application/json',
