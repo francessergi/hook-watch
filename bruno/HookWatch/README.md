@@ -11,18 +11,18 @@ Bruno collections are plain text files (`.bru`) meant to be committed to git
 ## Prerequisites
 
 Follow [docs/08-local-dev-guide.md](../../docs/08-local-dev-guide.md) to get
-the full stack running locally:
+the stack running:
 
-1. PostgreSQL + RabbitMQ (`docker compose up -d postgres rabbitmq`)
-2. HookWatch API (`php -S 127.0.0.1:8000 -t public`)
-3. Messenger worker (`php bin/console messenger:consume async -vv`)
-4. The fake backend that receives outbound deliveries
-   (`php -S 127.0.0.1:8123 -t api/tests/fixtures/e2e-backend`)
+1. `make up` — starts Postgres, RabbitMQ, the API and the worker, all as
+   containers, and runs migrations.
+2. `make fake-backend` (separate terminal) — starts a fake "customer
+   backend" on your host machine that logs every request it receives. It's
+   not part of the HookWatch stack, it simulates *your* service.
 
 ## How to use
 
 1. Open Bruno → **Open Collection** → select this `bruno/HookWatch` folder.
-2. Select the **Local** environment (top-right environment selector).
+2. Select the **Local** environment (top-right selector).
 3. Run the requests in order:
 
    - **01 - Setup (acting as HookWatch customer)**
@@ -53,10 +53,10 @@ the full stack running locally:
 
 Defined in `environments/Local.bru`:
 
-| Variable | Default | Notes |
+| Variable | Value | Notes |
 |---|---|---|
 | `base_url` | `http://127.0.0.1:8000` | HookWatch API |
 | `api_key` | `hookwatch-dev-key` | Sent as `X-API-Key` on admin endpoints |
-| `fake_backend_url` | `http://127.0.0.1:8123` | Used as `forward_url` when creating an endpoint |
+| `fake_backend_url` | `http://host.docker.internal:8123` | Used as `forward_url` when creating an endpoint — must be reachable *from the `api` container*, hence `host.docker.internal` instead of `127.0.0.1` |
 | `public_token` | _(auto-filled)_ | Set by "Create Endpoint" |
 | `event_id` | _(auto-filled)_ | Set by the "Send Webhook" requests |
