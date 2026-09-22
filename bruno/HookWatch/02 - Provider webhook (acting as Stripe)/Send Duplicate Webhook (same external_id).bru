@@ -1,0 +1,45 @@
+meta {
+  name: Send Duplicate Webhook (same external_id)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/hooks/{{public_token}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  X-Webhook-Id: manual-test-duplicate-1
+  X-Webhook-Event-Type: invoice.paid
+}
+
+body:json {
+  {
+    "event": "invoice.paid",
+    "customer": "acme",
+    "amount": 1500,
+    "currency": "EUR"
+  }
+}
+
+script:post-response {
+  if (res.status === 202) {
+    bru.setEnvVar("event_id", res.body.event_id);
+  }
+}
+
+docs {
+  Sends the same webhook twice (fixed X-Webhook-Id) to demonstrate
+  deduplication: HookWatch returns the same event_id both times instead of
+  creating a new event.
+
+  Run this request twice in a row and compare the `event_id` in the
+  response — it should stay the same.
+
+  If the endpoint's forward_url is unreachable and the event ends up
+  FAILED/DEAD_LETTER, re-sending this same request will trigger a new
+  delivery attempt of type PROVIDER_RETRY instead of being a no-op.
+}

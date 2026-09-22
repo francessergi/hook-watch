@@ -1,0 +1,20 @@
+meta {
+  name: List Events
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/events
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-Key: {{api_key}}
+}
+
+docs {
+  Lists the most recent webhook events across all endpoints (up to 50),
+  newest first.
+}
