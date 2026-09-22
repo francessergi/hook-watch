@@ -91,25 +91,15 @@ MVP foundation is implemented in the `api/` Symfony application with Doctrine en
 ## Run locally
 
 See [docs/08-local-dev-guide.md](docs/08-local-dev-guide.md) for the full guide,
-including manual testing with curl/Bruno and RabbitMQ/AMQP setup notes.
+including manual testing with curl/Bruno.
 
-Quick start with Docker Compose (recommended):
-
-```bash
-docker compose up --build
-docker compose exec api php bin/console doctrine:database:create --if-not-exists
-docker compose exec api php bin/console doctrine:migrations:migrate -n
-```
-
-Or run the app directly on the host against dockerized PostgreSQL/RabbitMQ:
+HookWatch runs fully dockerized. A `Makefile` wraps the common commands:
 
 ```bash
-docker compose up -d postgres rabbitmq
-cd api
-composer install
-php bin/console doctrine:database:create --if-not-exists
-php bin/console doctrine:migrations:migrate -n
-php -S 127.0.0.1:8000 -t public
-# in another terminal:
-php bin/console messenger:consume async -vv
+make up             # build (if needed), start Postgres/RabbitMQ/API/worker, run migrations
+make fake-backend   # (separate terminal) simulate the customer service receiving deliveries
+make test           # run the test suite
+make help           # see all available targets
 ```
+
+The API is then reachable at `http://localhost:8000`.

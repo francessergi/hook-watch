@@ -32,7 +32,7 @@ non-trivial, consider opening an issue first to avoid duplicate work.
 - [x] Basic health check endpoint
 - [x] Unit/integration test for the core MVP flow
 - [x] Realistic end-to-end test against a fake local backend
-- [x] Local dev docs (fully dockerized + hybrid setup, manual curl/Bruno testing)
+- [x] Local dev docs (fully dockerized setup via `Makefile`, manual curl/Bruno testing)
 
 ## 🚧 Open / Good first contributions
 
