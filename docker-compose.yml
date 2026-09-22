@@ -10,6 +10,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hookwatch -d hookwatch"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -17,14 +22,22 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   api:
     build:
       context: ./api
     container_name: hookwatch-api
     depends_on:
-      - postgres
-      - rabbitmq
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
     env_file:
       - ./api/.env
     environment:
@@ -42,8 +55,11 @@ services:
       context: ./api
     container_name: hookwatch-worker
     depends_on:
-      - postgres
-      - rabbitmq
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
     env_file:
       - ./api/.env
     environment:
@@ -51,7 +67,7 @@ services:
       MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f
       APP_ENV: dev
       APP_SECRET: dev-secret-change-me
-    command: php bin/console messenger:consume async -vv --time-limit=3600
+    command: php bin/console messenger:consume async -vv
 
 volumes:
   postgres_data:
