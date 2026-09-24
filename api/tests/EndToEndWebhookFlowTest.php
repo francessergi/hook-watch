@@ -47,7 +47,7 @@ class EndToEndWebhookFlowTest extends WebTestCase
 
         $client->request('POST', '/api/endpoints', server: [
             'CONTENT_TYPE' => 'application/json',
-            'HTTP_X-API-Key' => 'hookwatch-dev-key',
+            'HTTP_X-API-Key' => 'capn-hook-dev-key',
         ], content: json_encode([
             'name' => 'Stripe Payments',
             'forward_url' => 'http://127.0.0.1:8123',
@@ -76,7 +76,7 @@ class EndToEndWebhookFlowTest extends WebTestCase
 
         do {
             $client->request('GET', '/api/events/' . $eventId, server: [
-                'HTTP_X-API-Key' => 'hookwatch-dev-key',
+                'HTTP_X-API-Key' => 'capn-hook-dev-key',
             ]);
 
             $event = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);

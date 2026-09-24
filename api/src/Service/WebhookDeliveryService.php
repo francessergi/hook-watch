@@ -36,10 +36,10 @@ class WebhookDeliveryService
             $response = HttpClient::create()->request('POST', $event->getEndpoint()->getForwardUrl(), [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'X-HookWatch-Event-Id' => (string) $event->getId(),
-                    'X-HookWatch-Endpoint-Id' => (string) $event->getEndpoint()->getId(),
-                    'X-HookWatch-Event-Type' => $event->getEventType(),
-                    'X-HookWatch-External-Id' => (string) ($event->getExternalId() ?? ''),
+                    'X-Capn-Hook-Event-Id' => (string) $event->getId(),
+                    'X-Capn-Hook-Endpoint-Id' => (string) $event->getEndpoint()->getId(),
+                    'X-Capn-Hook-Event-Type' => $event->getEventType(),
+                    'X-Capn-Hook-External-Id' => (string) ($event->getExternalId() ?? ''),
                 ],
                 'json' => $event->getPayload(),
                 'timeout' => 30,

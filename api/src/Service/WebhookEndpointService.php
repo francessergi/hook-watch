@@ -37,7 +37,7 @@ class WebhookEndpointService
             throw new BadRequestHttpException('The forward URL is not a valid HTTP(S) URL.');
         }
 
-        $user = $this->userRepository->findOrCreateDefaultUser($email ?? 'admin@hookwatch.local');
+        $user = $this->userRepository->findOrCreateDefaultUser($email ?? 'admin@capn-hook.local');
         $endpoint = new WebhookEndpoint($user, $name, $forwardUrl);
 
         $this->entityManager->persist($endpoint);

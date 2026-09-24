@@ -141,7 +141,7 @@ Examples:
 - timeout
 - connection failure
 
-This is controlled by HookWatch's `RetryPolicy`.
+This is controlled by capn-hook's `RetryPolicy`.
 
 ### Message processing retry
 

@@ -1,24 +1,24 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: hookwatch-postgres
+    container_name: capn-hook-postgres
     environment:
-      POSTGRES_DB: hookwatch
-      POSTGRES_USER: hookwatch
-      POSTGRES_PASSWORD: hookwatch
+      POSTGRES_DB: capn-hook
+      POSTGRES_USER: capn-hook
+      POSTGRES_PASSWORD: capn-hook
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U hookwatch -d hookwatch"]
+      test: ["CMD-SHELL", "pg_isready -U capn-hook -d capn-hook"]
       interval: 5s
       timeout: 5s
       retries: 10
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: hookwatch-rabbitmq
+    container_name: capn-hook-rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -31,7 +31,7 @@ services:
   api:
     build:
       context: ./api
-    container_name: hookwatch-api
+    container_name: capn-hook-api
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,7 +41,7 @@ services:
     env_file:
       - ./api/.env
     environment:
-      DATABASE_URL: postgresql://hookwatch:hookwatch@postgres:5432/hookwatch?serverVersion=16&charset=utf8
+      DATABASE_URL: postgresql://capn-hook:capn-hook@postgres:5432/capn-hook?serverVersion=16&charset=utf8
       MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f
       DEFAULT_URI: http://localhost:8000
       APP_ENV: dev
@@ -53,7 +53,7 @@ services:
   worker:
     build:
       context: ./api
-    container_name: hookwatch-worker
+    container_name: capn-hook-worker
     depends_on:
       postgres:
         condition: service_healthy
@@ -63,7 +63,7 @@ services:
     env_file:
       - ./api/.env
     environment:
-      DATABASE_URL: postgresql://hookwatch:hookwatch@postgres:5432/hookwatch?serverVersion=16&charset=utf8
+      DATABASE_URL: postgresql://capn-hook:capn-hook@postgres:5432/capn-hook?serverVersion=16&charset=utf8
       MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f
       APP_ENV: dev
       APP_SECRET: dev-secret-change-me

@@ -11,7 +11,7 @@ final class Version20260922000000 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Initial HookWatch MVP schema';
+        return 'Initial capn-hook MVP schema';
     }
 
     public function up(Schema $schema): void

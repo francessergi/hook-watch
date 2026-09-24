@@ -54,7 +54,7 @@ status
 
 ### External ID and idempotency
 
-When a provider supplies a reliable external event ID, HookWatch uses:
+When a provider supplies a reliable external event ID, capn-hook uses:
 
 ```text
 (endpoint_id, external_id)
@@ -62,7 +62,7 @@ When a provider supplies a reliable external event ID, HookWatch uses:
 
 as the deduplication key.
 
-If no external ID is supplied, HookWatch does not attempt to infer duplicates from payloads or timestamps. Each reception is treated as a separate event.
+If no external ID is supplied, capn-hook does not attempt to infer duplicates from payloads or timestamps. Each reception is treated as a separate event.
 
 ## WebhookEvent states
 

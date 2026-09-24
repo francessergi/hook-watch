@@ -4,7 +4,7 @@
 
 Build a working product as early as possible.
 
-By the end of the delivery core, HookWatch should already be capable of receiving, persisting, delivering and retrying webhooks.
+By the end of the delivery core, capn-hook should already be capable of receiving, persisting, delivering and retrying webhooks.
 
 ## Day 1 — Foundation
 

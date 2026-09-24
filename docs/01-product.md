@@ -13,38 +13,38 @@ Integrating third-party webhooks repeatedly requires similar infrastructure:
 - delivery history
 - inspection and replay
 
-HookWatch provides that infrastructure as a standalone service.
+capn-hook provides that infrastructure as a standalone service.
 
 ## Product concept
 
-HookWatch sits between a third-party webhook provider and a customer's backend:
+capn-hook sits between a third-party webhook provider and a customer's backend:
 
 ```text
-Provider -> HookWatch -> Customer Backend
+Provider -> capn-hook -> Customer Backend
 ```
 
-The customer configures a HookWatch endpoint as the destination for provider webhooks. HookWatch accepts and persists incoming events, then forwards them asynchronously.
+The customer configures a capn-hook endpoint as the destination for provider webhooks. capn-hook accepts and persists incoming events, then forwards them asynchronously.
 
 ## Core value proposition
 
-HookWatch gives developers visibility and reliability around webhook delivery without requiring them to implement the same receiving, persistence, retry, deduplication, history and replay infrastructure for every provider integration.
+capn-hook gives developers visibility and reliability around webhook delivery without requiring them to implement the same receiving, persistence, retry, deduplication, history and replay infrastructure for every provider integration.
 
 ## Reliability boundary
 
-HookWatch cannot recover a webhook that it never received because the service itself was unavailable.
+capn-hook cannot recover a webhook that it never received because the service itself was unavailable.
 
-Its reliability guarantee begins once HookWatch has accepted and persisted the event.
+Its reliability guarantee begins once capn-hook has accepted and persisted the event.
 
 Production high availability would require redundant instances, load balancing, health checks, durable infrastructure and backups. These are outside the MVP.
 
 ## Main workflow
 
 1. A user creates a WebhookEndpoint.
-2. HookWatch generates a public webhook URL.
+2. capn-hook generates a public webhook URL.
 3. A third-party provider sends a webhook to that URL.
-4. HookWatch validates the basic request.
-5. HookWatch persists the event.
-6. HookWatch returns `202 Accepted`.
+4. capn-hook validates the basic request.
+5. capn-hook persists the event.
+6. capn-hook returns `202 Accepted`.
 7. The event is queued for asynchronous delivery.
 8. A worker forwards it to the customer's backend.
 9. Successful delivery marks the event as `DELIVERED`.

@@ -1,6 +1,6 @@
 # TODO / Roadmap
 
-This file tracks what's already working in HookWatch and what's still open,
+This file tracks what's already working in capn-hook and what's still open,
 so anyone who wants to contribute has a clear picture of where to jump in.
 
 See [docs/05-mvp-scope.md](docs/05-mvp-scope.md) for the full product scope

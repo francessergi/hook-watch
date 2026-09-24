@@ -1,9 +1,9 @@
 # Local Development & Manual Testing Guide
 
-This guide documents how to run HookWatch locally and validate the full
+This guide documents how to run capn-hook locally and validate the full
 ingestion → async delivery flow manually (e.g. with Bruno or curl).
 
-HookWatch is developed and run **fully dockerized**: PostgreSQL, RabbitMQ,
+capn-hook is developed and run **fully dockerized**: PostgreSQL, RabbitMQ,
 the API and the Messenger worker all run as containers via Docker Compose.
 This is the only supported way to run the app locally — it's the same setup
 you'd use for CI or a real deployment, so there's nothing extra to install
@@ -43,7 +43,7 @@ make fake-backend
 ```
 
 This runs `php -S 127.0.0.1:8123 -t api/tests/fixtures/e2e-backend` on your
-host machine (it's not part of the HookWatch stack — it simulates *your*
+host machine (it's not part of the capn-hook stack — it simulates *your*
 service). Received requests are appended to
 `api/tests/fixtures/e2e-backend/requests.log`.
 
@@ -65,7 +65,7 @@ service). Received requests are appended to
 
 > 💡 A ready-made Bruno collection with all the requests below (and
 > auto-chaining of `public_token`/`event_id` between requests) is available
-> at [`bruno/HookWatch`](../bruno/HookWatch). Open it in the Bruno app,
+> at [`bruno/capn-hook`](../bruno/capn-hook). Open it in the Bruno app,
 > select the **Local** environment, and run requests in order instead of
 > writing curl commands by hand.
 
@@ -74,7 +74,7 @@ service). Received requests are appended to
 ```bash
 curl -sS -X POST http://127.0.0.1:8000/api/endpoints \
   -H 'Content-Type: application/json' \
-  -H 'X-API-Key: hookwatch-dev-key' \
+  -H 'X-API-Key: capn-hook-dev-key' \
   -d '{"name":"Demo provider","forward_url":"http://host.docker.internal:8123"}'
 ```
 
@@ -97,7 +97,7 @@ dispatched to RabbitMQ.
 ### 4.3 Check delivery status
 
 ```bash
-curl -sS http://127.0.0.1:8000/api/events -H 'X-API-Key: hookwatch-dev-key'
+curl -sS http://127.0.0.1:8000/api/events -H 'X-API-Key: capn-hook-dev-key'
 ```
 
 Once the worker picks up the message, the event status should move to
@@ -108,17 +108,17 @@ backend.
 ### 4.4 Retry / replay
 
 ```bash
-curl -sS -X POST http://127.0.0.1:8000/api/events/<event_id>/retry -H 'X-API-Key: hookwatch-dev-key'
-curl -sS -X POST http://127.0.0.1:8000/api/events/<event_id>/replay -H 'X-API-Key: hookwatch-dev-key'
+curl -sS -X POST http://127.0.0.1:8000/api/events/<event_id>/retry -H 'X-API-Key: capn-hook-dev-key'
+curl -sS -X POST http://127.0.0.1:8000/api/events/<event_id>/replay -H 'X-API-Key: capn-hook-dev-key'
 ```
 
 ## 5. Environment variables reference
 
 | Variable | Purpose | Example (docker-compose) |
 |---|---|---|
-| `DATABASE_URL` | PostgreSQL DSN | `postgresql://hookwatch:hookwatch@postgres:5432/hookwatch?serverVersion=16&charset=utf8` |
+| `DATABASE_URL` | PostgreSQL DSN | `postgresql://capn-hook:capn-hook@postgres:5432/capn-hook?serverVersion=16&charset=utf8` |
 | `MESSENGER_TRANSPORT_DSN` | RabbitMQ DSN for async delivery | `amqp://guest:guest@rabbitmq:5672/%2f` |
-| `API_KEY` | Admin API key required via `X-API-Key` header | `hookwatch-dev-key` |
+| `API_KEY` | Admin API key required via `X-API-Key` header | `capn-hook-dev-key` |
 | `DEFAULT_URI` | Base URL used to build `public_url` for endpoints | `http://localhost:8000` |
 | `MAX_PAYLOAD_BYTES` | Max accepted webhook payload size | `1048576` |
 

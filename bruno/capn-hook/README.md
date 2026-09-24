@@ -1,7 +1,7 @@
-# HookWatch — Bruno collection
+# capn-hook — Bruno collection
 
 This is a [Bruno](https://www.usebruno.com/) collection for manually testing
-the full HookWatch flow: creating an endpoint, simulating a third-party
+the full capn-hook flow: creating an endpoint, simulating a third-party
 provider sending a webhook, and inspecting/retrying/replaying the resulting
 event.
 
@@ -17,15 +17,15 @@ the stack running:
    containers, and runs migrations.
 2. `make fake-backend` (separate terminal) — starts a fake "customer
    backend" on your host machine that logs every request it receives. It's
-   not part of the HookWatch stack, it simulates *your* service.
+   not part of the capn-hook stack, it simulates *your* service.
 
 ## How to use
 
-1. Open Bruno → **Open Collection** → select this `bruno/HookWatch` folder.
+1. Open Bruno → **Open Collection** → select this `bruno/capn-hook` folder.
 2. Select the **Local** environment (top-right selector).
 3. Run the requests in order:
 
-   - **01 - Setup (acting as HookWatch customer)**
+   - **01 - Setup (acting as capn-hook customer)**
      - `Create Endpoint` — registers a new webhook endpoint pointing at the
        fake backend. Automatically stores the returned `public_token` into
        the environment for the next requests.
@@ -55,8 +55,8 @@ Defined in `environments/Local.bru`:
 
 | Variable | Value | Notes |
 |---|---|---|
-| `base_url` | `http://127.0.0.1:8000` | HookWatch API |
-| `api_key` | `hookwatch-dev-key` | Sent as `X-API-Key` on admin endpoints |
+| `base_url` | `http://127.0.0.1:8000` | capn-hook API |
+| `api_key` | `capn-hook-dev-key` | Sent as `X-API-Key` on admin endpoints |
 | `fake_backend_url` | `http://host.docker.internal:8123` | Used as `forward_url` when creating an endpoint — must be reachable *from the `api` container*, hence `host.docker.internal` instead of `127.0.0.1` |
 | `public_token` | _(auto-filled)_ | Set by "Create Endpoint" |
 | `event_id` | _(auto-filled)_ | Set by the "Send Webhook" requests |

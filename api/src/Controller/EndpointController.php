@@ -136,7 +136,7 @@ final class EndpointController extends AbstractController
 
     private function assertAdminAccess(Request $request): void
     {
-        $apiKey = $_ENV['API_KEY'] ?? 'hookwatch-dev-key';
+        $apiKey = $_ENV['API_KEY'] ?? 'capn-hook-dev-key';
         if ((string) $request->headers->get('X-API-Key', '') !== $apiKey) {
             throw new AccessDeniedHttpException('Valid X-API-Key header is required.');
         }
