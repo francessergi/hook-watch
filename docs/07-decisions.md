@@ -58,7 +58,7 @@ Queue
 (endpoint_id, external_id)
 ```
 
-**Consequence:** HookWatch does not infer duplicates from payload similarity, timestamps or hashes.
+**Consequence:** capn-hook does not infer duplicates from payload similarity, timestamps or hashes.
 
 ---
 

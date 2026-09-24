@@ -33,7 +33,7 @@ script:post-response {
 
 docs {
   Sends the same webhook twice (fixed X-Webhook-Id) to demonstrate
-  deduplication: HookWatch returns the same event_id both times instead of
+  deduplication: capn-hook returns the same event_id both times instead of
   creating a new event.
 
   Run this request twice in a row and compare the `event_id` in the

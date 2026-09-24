@@ -5,7 +5,7 @@ namespace App\Tests;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class HookWatchMvpTest extends WebTestCase
+class CapnHookMvpTest extends WebTestCase
 {
     public function testEndpointAndWebhookFlow(): void
     {
@@ -26,7 +26,7 @@ class HookWatchMvpTest extends WebTestCase
 
         $client->request('POST', '/api/endpoints', [], [], [
             'CONTENT_TYPE' => 'application/json',
-            'HTTP_X-API-Key' => 'hookwatch-dev-key',
+            'HTTP_X-API-Key' => 'capn-hook-dev-key',
         ], json_encode([
             'name' => 'Stripe Payments',
             'forward_url' => 'https://example.com/webhooks/stripe',
@@ -54,7 +54,7 @@ class HookWatchMvpTest extends WebTestCase
 
         $eventId = (int) $ingestionPayload['event_id'];
         $client->request('GET', '/api/events/' . $eventId, server: [
-            'HTTP_X-API-Key' => 'hookwatch-dev-key',
+            'HTTP_X-API-Key' => 'capn-hook-dev-key',
         ]);
 
         $this->assertResponseIsSuccessful();

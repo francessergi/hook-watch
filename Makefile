@@ -3,7 +3,7 @@
 
 ## Show available targets
 help:
-	@echo "HookWatch — local development (fully dockerized)"
+	@echo "capn-hook — local development (fully dockerized)"
 	@echo ""
 	@echo "  make up             Build (if needed) and start Postgres, RabbitMQ, API and worker"
 	@echo "  make down           Stop and remove containers (keeps data volume)"
@@ -63,7 +63,7 @@ test:
 		-e MESSENGER_TRANSPORT_DSN=sync:// \
 		api php bin/phpunit
 
-## Start the fake customer backend on the host, simulating the service HookWatch delivers to.
+## Start the fake customer backend on the host, simulating the service capn-hook delivers to.
 ## Use http://host.docker.internal:8123 as the forward_url when creating endpoints.
 fake-backend:
 	cd api && php -S 127.0.0.1:8123 -t tests/fixtures/e2e-backend

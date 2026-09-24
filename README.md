@@ -1,16 +1,16 @@
-# HookWatch
+# capn-hook
 
-[![CI](https://github.com/francessergi/hook-watch/actions/workflows/ci.yml/badge.svg)](https://github.com/francessergi/hook-watch/actions/workflows/ci.yml)
+[![CI](https://github.com/francessergi/capn-hook/actions/workflows/ci.yml/badge.svg)](https://github.com/francessergi/capn-hook/actions/workflows/ci.yml)
 ![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)
 ![Symfony](https://img.shields.io/badge/Symfony-7.4-000000?logo=symfony&logoColor=white)
 ![RabbitMQ](https://img.shields.io/badge/RabbitMQ-async%20delivery-FF6600?logo=rabbitmq&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
 
-HookWatch is a webhook reliability and observability service that sits between third-party webhook providers and customer backends.
+capn-hook is a webhook reliability and observability service that sits between third-party webhook providers and customer backends.
 
 ```mermaid
 flowchart LR
-    P[Third-party provider<br/>e.g. Stripe] -- POST /hooks/token --> H[HookWatch API]
+    P[Third-party provider<br/>e.g. Stripe] -- POST /hooks/token --> H[capn-hook API]
     H -- 202 Accepted --> P
     H -- persist --> DB[(PostgreSQL)]
     H -- dispatch --> Q[[RabbitMQ]]
@@ -72,10 +72,10 @@ with an unintended git identity).
 ## Manual testing (Bruno)
 
 A ready-to-use [Bruno](https://www.usebruno.com/) collection lives in
-[`bruno/HookWatch`](bruno/HookWatch) — open that folder in Bruno to create
+[`bruno/capn-hook`](bruno/capn-hook) — open that folder in Bruno to create
 endpoints, simulate provider webhooks, and inspect/retry/replay events
 without writing curl commands by hand. See
-[bruno/HookWatch/README.md](bruno/HookWatch/README.md) for usage.
+[bruno/capn-hook/README.md](bruno/capn-hook/README.md) for usage.
 
 ## Documentation
 
@@ -97,7 +97,7 @@ MVP foundation is implemented in the `api/` Symfony application with Doctrine en
 See [docs/08-local-dev-guide.md](docs/08-local-dev-guide.md) for the full guide,
 including manual testing with curl/Bruno.
 
-HookWatch runs fully dockerized. A `Makefile` wraps the common commands:
+capn-hook runs fully dockerized. A `Makefile` wraps the common commands:
 
 ```bash
 make up             # build (if needed), start Postgres/RabbitMQ/API/worker, run migrations

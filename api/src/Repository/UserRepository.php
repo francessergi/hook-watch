@@ -13,7 +13,7 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findOrCreateDefaultUser(string $email = 'admin@hookwatch.local'): User
+    public function findOrCreateDefaultUser(string $email = 'admin@capn-hook.local'): User
     {
         $user = $this->findOneBy(['email' => strtolower($email)]);
 
